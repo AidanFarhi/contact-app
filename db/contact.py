@@ -73,7 +73,12 @@ class ContactDB:
             return row
 
         self.data = self.data.apply(update_closure, axis=1)
+        self._flush_df_to_file()
         return True
+
+    def delete(self, id: int):
+        self.data = self.data[self.data["id"] != id]
+        self._flush_df_to_file()
 
     def _get_id(self):
         return max(self.data["id"]) + 1

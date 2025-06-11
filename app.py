@@ -69,5 +69,11 @@ def contacts_edit_post(contact_id=0):
         return render_template("edit_contact.html", contact=updated_contact)
 
 
+@app.route("/contacts/<int:contact_id>/delete", methods=["POST"])
+def contacts_delete(contact_id=0):
+    db.delete(contact_id)
+    return redirect("/contacts")
+
+
 if __name__ == "__main__":
     app.run(port=7777, debug=True)
