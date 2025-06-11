@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="/contacts/{{ contact.id }}/edit" method="post">
+    <fieldset>
+        <legend>Contact Values</legend>
+        <p>
+            <label for="email">Email</label>
+            <input name="email" id="email" type="email" placeholder="{{ contact.email }}" value="{{ contact.email }}">
+            <span class="error">{{ contact.errors['email'] }}</span>
+        </p>
+        <p>
+            <label for="first_name">First Name</label>
+            <input name="first_name" id="first_name" type="text" placeholder="{{ contact.first_name }}" value="{{ contact.first_name }}">
+            <span class="error">{{ contact.errors['first_name'] }}</span>
+        </p>
+        <p>
+            <label for="last_name">Last Name</label>
+            <input name="last_name" id="last_name" type="text" placeholder="{{ contact.last_name }}" value="{{ contact.last_name }}">
+            <span class="error">{{ contact.errors['last_name'] }}</span>
+        </p>
+        <p>
+            <label for="phone">Phone</label>
+            <input name="phone" id="phone" type="text" placeholder="{{ contact.phone }}" value="{{ contact.phone }}">
+            <span class="error">{{ contact.errors['phone'] }}</span>
+        </p>
+        <button>Save</button>
+    </fieldset>
+</form>
+<form action="/contacts/{{ contact.id }}/delete" method="post">
+  <button>Delete Contact</button>
+</form>
+<p>
+  <a href="/contacts">Back</a>
+</p>
+{% endblock %}

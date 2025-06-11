@@ -12,10 +12,42 @@ class ContactDB:
         results = self.data[
             (self.data["first_name"] == query) | (self.data["last_name"] == query)
         ]
-        return results.to_dict(orient="records")
+        results_dicts = results.to_dict(orient="records")
+        return [
+            Contact(
+                contact_dict["id"],
+                contact_dict["first_name"],
+                contact_dict["last_name"],
+                contact_dict["phone"],
+                contact_dict["email"],
+            )
+            for contact_dict in results_dicts
+        ]
+
+    def find(self, id: int):
+        result = self.data[self.data["id"] == id]
+        contact_dict = result.to_dict(orient="records")[0]
+        contact = Contact(
+            contact_dict["id"],
+            contact_dict["first_name"],
+            contact_dict["last_name"],
+            contact_dict["phone"],
+            contact_dict["email"],
+        )
+        return contact
 
     def all(self):
-        return self.data.to_dict(orient="records")
+        all_contacts = self.data.to_dict(orient="records")
+        return [
+            Contact(
+                contact_dict["id"],
+                contact_dict["first_name"],
+                contact_dict["last_name"],
+                contact_dict["phone"],
+                contact_dict["email"],
+            )
+            for contact_dict in all_contacts
+        ]
 
     def create(self, contact: Contact):
         id = self._get_id()
@@ -29,6 +61,18 @@ class ContactDB:
         new_row_df = pd.DataFrame([row])
         self.data = pd.concat([self.data, new_row_df], ignore_index=True)
         self._flush_df_to_file()
+        return True
+
+    def update(self, contact: Contact):
+        def update_closure(row):
+            if row["id"] == contact.id:
+                row["first_name"] = contact.first_name
+                row["last_name"] = contact.last_name
+                row["phone"] = contact.phone
+                row["email"] = contact.email
+            return row
+
+        self.data = self.data.apply(update_closure, axis=1)
         return True
 
     def _get_id(self):
