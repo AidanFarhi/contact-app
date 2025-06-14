@@ -3,6 +3,7 @@ from db.contact import ContactDB
 from model.contact import Contact
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 db = ContactDB("data/contacts.csv")
 
