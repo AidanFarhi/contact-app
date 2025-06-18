@@ -70,10 +70,10 @@ def contacts_edit_post(contact_id=0):
         return render_template("edit_contact.html", contact=updated_contact)
 
 
-@app.route("/contacts/<int:contact_id>/delete", methods=["POST"])
-def contacts_delete(contact_id=0):
+@app.route("/contacts/<int:contact_id>", methods=["DELETE"])
+def contact_delete(contact_id=0):
     db.delete(contact_id)
-    return redirect("/contacts")
+    return redirect("/contacts", 303)
 
 
 if __name__ == "__main__":
